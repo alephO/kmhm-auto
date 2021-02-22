@@ -4,7 +4,6 @@ import base64
 import PyChromeDevTools
 import cv2
 import numpy
-from pyvisauto import Region, FindFailed, ImageMatch
 from utils.logger import log_adapter
 
 from constants import VISUAL_URL
@@ -47,47 +46,9 @@ class PCDTA(object):
         logger.info('Successfully hook into chrome')
 
     def start_bot(self):
-        """Method that attempts to start Kancolle from the game's splash
-        screen. If starting from the splash screen, kcauto will load the data
-        from the get_data api call. Otherwise, it will load the stored data
-        from previous startups.
-        """
-        screen = Region()
-        # if self.click_existing(screen, 'global|game_start.png'):
-        #     Log.log_msg("Starting kancolle from splash screen.")
-        #     api.api.update_from_api({
-        #         KCSAPIEnum.GET_DATA, KCSAPIEnum.REQUIRE_INFO, KCSAPIEnum.PORT})
-        #     self.wait(screen, 'nav|home_menu_sortie.png', 60)
-        #     Log.log_success("Kancolle successfully started.")
-        #     shp.ships.load_wctf_names(force_update=True)
-        # else:
-        #     api.api.update_ship_library_from_json()
-        # self.sleep()
         return True
 
-    def _get_region(self, region):
-        """Helper method that returns a Region based on the region passed in.
-        If a Region or Match object is passed in, it will return that  object
-        as-is. If a string is passed in, it will look up that string key from
-        the pre-defined region dictionary and return it if there is a match.
 
-        Args:
-            region (Region, Match str): Region/Match object or string key of
-                pre-defined region.
-
-        Raises:
-            TypeError: string region key was not found in pre-defined region
-                list.
-
-        Returns:
-            Region/ImageMatch: Region or ImageMatch object.
-        """
-        if type(region) == str:
-            return self.r[region]
-        elif isinstance(region, ImageMatch):
-            return region
-        else:
-            raise TypeError("Invalid region specified.")
 
     def chrome_screenshot( self, savename=None ):
         self.visual_hook.Page.bringToFront()
