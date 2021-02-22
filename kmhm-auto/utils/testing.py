@@ -1,6 +1,3 @@
-import pyautogui
-from pyvisauto import Region
-
 from chrome_api.pcdta import pcdta
 from utils.logger import log_adapter
 import base64

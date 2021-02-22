@@ -1,1 +1,2 @@
 pychromedevtools~=0.3
+numpy~=1.17.5
