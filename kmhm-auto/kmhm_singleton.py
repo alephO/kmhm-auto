@@ -31,11 +31,17 @@ class KmhmAuto(object):
 
     def simple_next_step(self):
         self._logger.debug('Simple step')
-        sc = img_handler.take_screenshot()
-        if sc is not None and not img_handler.img_rough_equal(sc, self.sc_data):
-            filename = "maint/" +log_adapter.datetime_str(extention='png')
-            self.sc_data = sc
-            img_handler.save_img(filename, self.sc_data)
+        sc = img_handler.take_screenshot( trim=True )
+        # sc is an Image adapter. Can't use if sc
+        if sc is not None:
+            if not img_handler.img_rough_equal(sc, self.sc_data):
+                self.sc_data = sc
+                filename = "maint/" +log_adapter.datetime_str(extention='png')
+                self._logger.debug("Saving image as %s" % filename )
+                img_handler.save_img(filename, self.sc_data)
+            else:
+                self._logger.debug("Don't save image. Didn't change a lot")
+                self.sc_data = sc
         time.sleep(5)
 
     def update_sm_if_required(self):
