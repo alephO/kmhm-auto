@@ -27,3 +27,7 @@ This project use ChromeDevTools' `Page.captureScreenshot` to take screenshots re
 analyze status of the game and do the next step. Seems like it does a real system call to do that,
 which means it needs to bring the page to front. The plan to interact with the game is also to use API
 provided by ChromeDevTools, which I believe the same. User probably can't do other tasks on the mean time.
+
+### ChromeDevTools reactions on SIGINT
+That package seems to return `None` instead of throw KeyboardInterrupt to caller. Not causing trouble for now. 
+But need to keep this in mind.

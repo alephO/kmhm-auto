@@ -5,6 +5,8 @@ from enum import Enum
 
 from utils.logger import log_adapter
 from utils.img_handler import img_handler
+from db.sqlite_handler import dbHandler
+from db.image_samples import image_sampler
 import time
 
 
@@ -34,11 +36,15 @@ class KmhmAuto(object):
         sc = img_handler.take_screenshot( trim=True )
         # sc is an Image adapter. Can't use if sc
         if sc is not None:
-            if not img_handler.img_rough_equal(sc, self.sc_data):
+            old_sc_pp = img_handler.get_picked_pixels(self.sc_data)
+            sc_pp = img_handler.get_picked_pixels(sc)
+            if not img_handler.pixels_rough_equal(old_sc_pp, sc_pp):
                 self.sc_data = sc
-                filename = "maint/" +log_adapter.datetime_str(extention='png')
+                #filename = "maint/" +log_adapter.datetime_str(extention='png')
+                filename = "maint/current.png"
                 self._logger.debug("Saving image as %s" % filename )
                 img_handler.save_img(filename, self.sc_data)
+                image_sampler.log_image( sc, sc_pp )
             else:
                 self._logger.debug("Don't save image. Didn't change a lot")
                 self.sc_data = sc
@@ -49,6 +55,10 @@ class KmhmAuto(object):
 
     def pcdta(self):
         return self._pcdta
+
+    def cleanup(self):
+        self._logger.debug("Running singleton's cleanup function")
+        dbHandler.cleanup()
 
 class Location(Enum):
     UNDEFINED = 0

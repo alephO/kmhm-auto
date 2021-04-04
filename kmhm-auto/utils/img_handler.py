@@ -75,6 +75,44 @@ class ImageHandler():
         else:
             return img_array
 
+    def get_picked_pixels(self, img):
+        # This function pick 4 points of a image. Trying to use this to detect if image changed or
+        # "basically not change."
+        if img is None:
+            return None
+        if isinstance(img, ImageAdapter):
+            img = img.arr
+        h, w, _ = img.shape
+        if abs(h - self.game_height) > 2 or abs(w - self.game_width) > 2:
+            logger.error("None standard size for image. Ignoring.")
+            return None
+        x_delta = math.floor( w / 6 )
+        y = math.floor( h / 2)
+        return [ img[y, i * x_delta, :] for i in range(1,5) ]
+
+    @classmethod
+    def nd_equal(cls, nd1, nd2):
+        return (nd1==nd2).all()
+
+    @classmethod
+    def pixels_rough_equal( cls, arr1, arr2, rate=0.74 ):
+        if arr1 is None or arr2 is None:
+            if arr1 is None and arr2 is None:
+                return True
+            return False
+
+        l = len(arr1)
+        if l != len(arr2):
+            logger.error("Length not equal")
+            return None
+
+        matches = 0
+        for i in range(l):
+            if cls.nd_equal(arr1[i], arr2[i]):
+                matches += 1
+
+        return matches/l > rate
+
     @classmethod
     def img_rough_equal(cls, img1, img2):
         if img1 is None or img2 is None:
@@ -113,6 +151,7 @@ class ImageHandler():
         if value >= similarity:
             return location[0], location[1], width, height
         return None
+
 
 class ImageAdapter:
     def __init__(self, arr, x_delta = 0, y_delta = 0):
