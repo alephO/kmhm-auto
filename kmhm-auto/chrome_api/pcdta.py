@@ -65,5 +65,8 @@ class PCDTA(object):
     def test(self):
         pass
 
+    def click(self, x, y):
+        self.visual_hook.Input.synthesizeTapGesture(x=x, y=y)
+
 
 pcdta = PCDTA()

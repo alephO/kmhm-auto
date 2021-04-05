@@ -6,6 +6,15 @@ This is at the cost of consuming more time and resources than light-weight brows
 
 It is still being developed, uploaded for my own record.
 
+## Status
+It is a basically working version, and theoretically works for other games. All you need to do is change some 
+variable values like url, game canvas size and location, a resource folder with pngs to find a click, and a 
+changed `sp_lst` in `kmhm_singleton`.
+
+The future plan is to use an FSM to handle more complex cases, while currently it is basically stateless.
+It should also be able to quickly determine current state, to have the flexibility to halt and re-run the 
+project while game is running.
+
 ## Limitations
 
 ### Resource consuming

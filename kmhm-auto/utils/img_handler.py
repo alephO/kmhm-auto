@@ -140,11 +140,13 @@ class ImageHandler():
         return True
 
     @classmethod
-    def find(cls, sc, image, similarity=0.9):
-        if isinstance(image, ImageAdapter):
-            image = image.arr
+    def find(cls, origin, image, similarity=0.9):
+        if isinstance( origin, ImageAdapter):
+            arr = origin.arr
+        else:
+            arr = origin
         template = cv2.imread('assets/{}.png'.format(image), cv2.IMREAD_COLOR)
-        match = cv2.matchTemplate(sc, template, cv2.TM_CCOEFF_NORMED)
+        match = cv2.matchTemplate(arr, template, cv2.TM_CCOEFF_NORMED)
 
         height, width = template.shape[:2]
         value, location = cv2.minMaxLoc(match)[1], cv2.minMaxLoc(match)[3]
